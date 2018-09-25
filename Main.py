@@ -4,7 +4,6 @@ from TankGroup import *
 from constants import *
 
 #initializing variables
-
 clock = pygame.time.Clock()
 gameDisplay = pygame.display.set_mode((display_width, display_height))
 pygame.display.set_caption("TANKS")
@@ -15,13 +14,10 @@ pressedRight = False
 pressedUp = False
 gameExit = False
 
-
-initial_board = Helper.readFile("map.txt")
-
 #groups
 allSprite = pygame.sprite.LayeredUpdates()  # to update a portion of a map per frame
 bulletSprites = pygame.sprite.Group()
-tankSprites = TankGroup(initial_board, bulletSprites, allSprite)
+tankSprites = TankGroup(initial_board, bulletSprites, allSprite)  #enemy tank only
 wallGroup = pygame.sprite.Group()
 unbreakableWallGroup = pygame.sprite.Group()
 
@@ -41,17 +37,17 @@ for r in range(len(initial_board)):
 pygame.display.update()
 background = gameDisplay.copy()
 
-playerTank = Tank(50, 150, "R")
+playerTank = Tank(50, 150, "R",playerHealth)
 allSprite.add(playerTank)
 
-enemy_tank1 = TankAI(900, 50, "l", "M")
+enemy_tank1 = TankAI(900, 50, "l", "M",enemyHealth)
 #testmap = tankSprites.generateCurrentMap(wallGroup, playerTank)
 #enemy_tank1.findShortestPath((1, 3), testmap)
 #Helper.print_best_move_map(enemy_tank1.shortest_path_tree, testmap)
 tankSprites.add(enemy_tank1)
 allSprite.add(enemy_tank1)
 
-enemy_tank3 = TankAI(900, 350, "u", "M")
+enemy_tank3 = TankAI(900, 350, "u", "M",enemyHealth) #enemy tank in class Tank.py
 tankSprites.add(enemy_tank3)
 allSprite.add(enemy_tank3)
 
@@ -188,9 +184,17 @@ while not gameExit:
         else:
             playerTank.changeVRight()
         playerTank.move()
-    if (pygame.sprite.spritecollide(playerTank, tankSprites, dokill=False)):
+    if (pygame.sprite.spritecollide(playerTank,tankSprites, dokill=False)):
         for tank in tankSprites:
             print(tank.rect.x, tank.rect.y)
+    for bullet in bulletSprites:
+        for tank in tankSprites:
+            if pygame.sprite.collide_rect(bullet, tank):
+                bullet.kill()
+                tank.damage()
+                print(tank.health)
+                if tank.health==0:
+                    tank.kill()
     playerTank.update()
     bulletSprites.update()
     tankSprites.update(wallGroup, playerTank)

@@ -26,6 +26,8 @@ class Bullet(pygame.sprite.Sprite):
             self.kill()
         elif 0 > self.rect.y or self.rect.y > display_height:
             self.kill()
+        if initial_board[int(self.rect.y/50)][int(self.rect.x/50)]==1:
+            self.kill()
 
 
 

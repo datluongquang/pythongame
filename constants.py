@@ -1,6 +1,9 @@
 import Helper, os, pygame
 DIR_ROOT = os.path.dirname(os.path.abspath(__file__))
 IMAGES = os.path.join(DIR_ROOT, "images")
+initial_board = Helper.readFile("map.txt")
+playerHealth=100
+enemyHealth=30
 
 white = (255, 255, 255)
 black = (0, 0, 0)

@@ -31,4 +31,4 @@ wall1_img = pygame.image.load(os.path.join(IMAGES, 'wall.png'))
 wall2_img = pygame.image.load(os.path.join(IMAGES, "wall2.png"))
 road_img = pygame.image.load(os.path.join(IMAGES, "road.png"))
 bullet_img = pygame.image.load(os.path.join(IMAGES, "bullet.png"))
-
+explosion_img=pygame.image.load(os.path.join(IMAGES, "explosion.png"))
